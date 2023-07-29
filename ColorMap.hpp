@@ -11,13 +11,37 @@ public:
 
 	ColorMap(int max_iter) :
 		max_iter{ max_iter } {
-		compute_jet();
-		compute_colors();
+		//compute_jet();
+		//compute_colors();
+		compute_black_and_white();
+		compute_colors_bnw();
+		
 		int i{ 0 };
 		for (auto c : color_vec) {
-			std::cout << i << ": " << static_cast<int>(c.r) << ", " << static_cast<int>(c.g) << ", " << static_cast<int>(c.b) << "\n";
+			std::cout << i << ": " << static_cast<int>(c.r) << ", " << static_cast<int>(c.g) << ", " << static_cast<int>(c.b) << ", " << static_cast<int>(c.a) << "\n";
 			++i;
 		}
+	}
+
+	void compute_black_and_white() {
+		for (int i{ 0 }; i < 256; ++i) {
+			total_cmap_vec.push_back(sf::Color(255, 255, 255, i));
+		}
+	}
+
+	void compute_colors_bnw() {
+
+		int total_cmap_size = static_cast<int>(total_cmap_vec.size());
+		double ratio{ static_cast<double>(total_cmap_size) / max_iter };
+		int new_pos{ 0 };
+
+		for (int i{ 0 }; i < max_iter + 1; ++i) {
+			//new_pos = static_cast<int>(i * ratio);
+			color_vec.push_back(total_cmap_vec[new_pos]);
+			new_pos = new_pos + (total_cmap_size - new_pos) / 20; // This operation makes the selection within the total cmap non linear (30 is arbitrary)
+		}														  // In the case of jet, we thus have more yellow - red colors for high convergence.
+
+		//color_vec.push_back(sf::Color(0, 0, 0, 255)); // Add black at the end
 	}
 
 	void compute_jet() {
@@ -51,10 +75,16 @@ public:
 		for (int i{ 0 }; i < max_iter; ++i) {
 
 			color_vec.push_back(total_cmap_vec[new_pos]);
-			new_pos = new_pos + (total_cmap_size - new_pos) / 30;
-		}
+			new_pos = new_pos + (total_cmap_size - new_pos) / 30; // This operation makes the selection within the total cmap non linear (30 is arbitrary)
+		}														  // In the case of jet, we thus have more yellow - red colors for high convergence.
 		
-		color_vec.push_back(sf::Color(0, 0, 0, 255));
+		color_vec.push_back(sf::Color(0, 0, 0, 255)); // Add black at the end
+	}
+
+	void reverse() {
+		std::reverse(total_cmap_vec.begin(), total_cmap_vec.end());
+		color_vec.clear();
+		compute_colors();
 	}
 	
 
