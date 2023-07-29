@@ -13,7 +13,8 @@ public:
 		max_iter{ max_iter } {
 		//compute_jet();
 		//compute_colors();
-		compute_black_and_white();
+		//compute_black_and_white();
+		compute_black_purple_white();
 		compute_colors_bnw();
 		
 		int i{ 0 };
@@ -42,6 +43,21 @@ public:
 		}														  // In the case of jet, we thus have more yellow - red colors for high convergence.
 
 		//color_vec.push_back(sf::Color(0, 0, 0, 255)); // Add black at the end
+	}
+
+	void compute_black_purple() {
+		for (int i{ 0 }; i < 256; ++i) {
+			total_cmap_vec.push_back(sf::Color(i, 0, i, 255));
+		}
+	}
+
+	void compute_black_purple_white() {
+		for (int i{ 0 }; i < 256; ++i) {
+			total_cmap_vec.push_back(sf::Color(i, 0, i, 255));
+		}
+		for (int i{ 0 }; i < 256; ++i) {
+			total_cmap_vec.push_back(sf::Color(255, i, 255, 255));
+		}
 	}
 
 	void compute_jet() {
