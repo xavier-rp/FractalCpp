@@ -1,0 +1,51 @@
+#pragma once
+#include <iostream>
+#include <vector>
+#include <chrono>
+#include <algorithm>
+
+#include "SFML/Graphics.hpp"
+
+#include "Julia.hpp"
+#include "Grid.hpp"
+#include "ColorMap.hpp"
+
+class Renderer {
+public:
+	Julia &julia;
+	Grid &grid;
+	ColorMap& color_map;
+	sf::VertexArray m_vertices;
+
+	Renderer(Julia &julia, Grid &grid, ColorMap &color_map) :
+		julia{ julia },
+		grid{ grid },
+		color_map{ color_map } {
+		std::cout << "Building Renderer\n";
+		m_vertices = sf::VertexArray(sf::Points, grid.width * grid.height);
+	}
+
+	void render_fractal() {
+		std::vector<int> convergence_vector;
+		auto start = std::chrono::high_resolution_clock::now();
+		convergence_vector = julia.iterate_plane(grid.x_vector, grid.y_vector);
+		auto stop = std::chrono::high_resolution_clock::now();
+		auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+		std::cout << "Computation time : " << duration.count() / 1000000.0 << " s" << std::endl;
+
+		int highest_iter{ *(std::max_element(convergence_vector.begin(), convergence_vector.end()))};
+
+		std::cout << highest_iter << std::endl;
+		int pos;
+
+		for (int x{ 0 }; x < grid.width; ++x) {
+			for (int y{ 0 }; y < grid.height; ++y) {
+				pos = x * grid.height + y;
+				m_vertices[pos].position = sf::Vector2f(static_cast<float>(x), static_cast<float>(y));
+				m_vertices[pos].color = color_map.color_vec[convergence_vector[pos]];
+				//m_vertices[pos].color.a = static_cast<sf::Uint8>((static_cast<float>(convergence_vector[pos]) / std::min(highest_iter, julia.max_iter)) * 255);
+			}
+		}
+	}
+	
+};
