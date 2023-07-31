@@ -114,41 +114,9 @@ public:
 																	  // In the case of jet, we thus have more yellow - red colors for high convergence.
 			}
 		}														  
-
-	}
-
-	void compute_colors_end_black() {
-
-		int total_cmap_size = static_cast<int>(total_cmap_vec.size());
-		double ratio{ static_cast<double>(total_cmap_size) / max_iter };
-		int new_pos{ 0 };
-
-		for (int i{ 0 }; i < max_iter; ++i) {
-			//new_pos = static_cast<int>(i * ratio);
-			color_vec.push_back(total_cmap_vec[new_pos]);
-			new_pos = new_pos + (total_cmap_size - new_pos) / 20; // This operation makes the selection within the total cmap non linear (30 is arbitrary)
-		}														  // In the case of jet, we thus have more yellow - red colors for high convergence.
-
-		color_vec.push_back(sf::Color(0, 0, 0, 255)); // Add black at the end
-	}
-
-	void compute_colors_old(){
-		// https://math.stackexchange.com/questions/1635999/algorithm-to-convert-integer-to-3-variables-rgb
-		double group_length{ 256 * 256 * 256 / static_cast<double>(max_iter) };
-		int c;
-		int r;
-		int g;
-		int b;
-
-		for (int i{ 0 }; i < max_iter; ++i) {
-			c = static_cast<int>(i * group_length);
-			b = c % 256;
-			g = ((c - b) / 256) % 256;
-			r = ((c - b) / (256 * 256)) - g / 256;
-			color_vec.push_back(sf::Color(r, g, b, 255));
-
-		}
-
+		
+		//TODO Reimplement option?
+		//color_vec.push_back(sf::Color(0, 0, 0, 255)); // Add black at the end
 	}
 
 };
