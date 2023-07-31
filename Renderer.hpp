@@ -6,19 +6,19 @@
 
 #include "SFML/Graphics.hpp"
 
-#include "Julia.hpp"
+#include "Fractal.hpp"
 #include "Grid.hpp"
 #include "ColorMap.hpp"
 
 class Renderer {
 public:
-	Julia &julia;
+	Fractal &fractal;
 	Grid &grid;
 	ColorMap& color_map;
 	sf::VertexArray m_vertices;
 
-	Renderer(Julia &julia, Grid &grid, ColorMap &color_map) :
-		julia{ julia },
+	Renderer(Fractal &fractal, Grid &grid, ColorMap &color_map) :
+		fractal{ fractal },
 		grid{ grid },
 		color_map{ color_map } {
 		std::cout << "Building Renderer\n";
@@ -28,7 +28,7 @@ public:
 	void render_fractal() {
 		std::vector<int> convergence_vector;
 		//auto start = std::chrono::high_resolution_clock::now();
-		convergence_vector = julia.iterate_plane(grid.x_vector, grid.y_vector);
+		convergence_vector = fractal.iterate_plane(grid.x_vector, grid.y_vector);
 		//auto stop = std::chrono::high_resolution_clock::now();
 		//auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
 		//std::cout << "Computation time : " << duration.count() / 1000000.0 << " s" << std::endl;
