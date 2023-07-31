@@ -2,23 +2,17 @@
 #include <iostream>
 #include <vector>
 
+#include "Fractal.hpp"
 
-class Julia {
+class Julia: public Fractal {
 public:
-	double c_r;
-	double c_i;
-	int max_iter;
-	double max_radius_squared;
 
 	Julia(double c_r, double c_i, int max_iter, double max_radius):
-		c_r{ c_r },
-		c_i{ c_i },
-		max_iter{ max_iter },
-		max_radius_squared{ max_radius * max_radius } {
+		Fractal(c_r, c_i, max_iter,  max_radius){
 		std::cout << "Building Julia object\n";
 	}
 
-	int iterate_z(double z_r, double z_i) {
+	virtual int iterate_z(double z_r, double z_i) override {
 		int i{ 0 };
 		while ( (i < max_iter ) && (z_r*z_r + z_i * z_i <= max_radius_squared)){
 
@@ -31,7 +25,7 @@ public:
 		return i;
 	}
 
-	std::vector<int> iterate_plane(const std::vector<double> z_real, const std::vector<double> z_imag) {
+	virtual std::vector<int> iterate_plane(const std::vector<double> z_real, const std::vector<double> z_imag) override {
 		std::vector<int> convergence_vector;
 
 		for (auto z_r : z_real) {
@@ -43,5 +37,5 @@ public:
 		return convergence_vector;
 	}
 
-
+	virtual ~Julia() = default;
 };
