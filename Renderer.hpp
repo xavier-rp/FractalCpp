@@ -33,13 +33,13 @@ public:
 		//auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
 		//std::cout << "Computation time : " << duration.count() / 1000000.0 << " s" << std::endl;
 
-		int pos;
+		int pos{ 0 };
 
-		for (int x{ 0 }; x < grid.width; ++x) {
-			for (int y{ 0 }; y < grid.height; ++y) {
-				pos = x * grid.height + y;
+		for (int y{ grid.height - 1 }; y >= 0; --y) {
+			for (int x{ 0 }; x < grid.width; ++x) {
 				m_vertices[pos].position = sf::Vector2f(static_cast<float>(x), static_cast<float>(y));
 				m_vertices[pos].color = color_map.color_vec[convergence_vector[pos]];
+				++pos;
 			}
 		}
 	}
