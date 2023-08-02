@@ -23,7 +23,13 @@ public:
 		width{ width },
 		height{ height } {
 
+		build_grid();
+
 		std::cout << "Building grid\n";
+
+	}
+
+	void build_grid() {
 
 		double x_step{ (x_max - x_min) / width };
 		double y_step{ (y_max - y_min) / height };
@@ -37,6 +43,20 @@ public:
 			y_indices.push_back(y_i);
 			y_vector.push_back(y_min + y_i * y_step);
 		}
+	}
 
+	void update_grid(double new_x_min, double new_x_max, double new_y_min, double new_y_max) {
+
+		x_min = new_x_min;
+		x_max = new_x_max;
+		y_min = new_y_min;
+		y_max = new_y_max;
+
+		x_indices.clear();
+		y_indices.clear();
+		x_vector.clear();
+		y_vector.clear();
+		
+		build_grid();
 	}
 };
