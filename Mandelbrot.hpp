@@ -32,8 +32,8 @@ public:
 	virtual std::vector<int> iterate_plane(const std::vector<double> z_real, const std::vector<double> z_imag) override {
 		std::vector<int> convergence_vector;
 
-		for (auto z_r : z_real) {
-			for (auto z_i : z_imag) {
+		for (auto z_i : z_imag) {
+			for (auto z_r : z_real) {
 				convergence_vector.push_back(iterate_z(z_r, z_i));
 			}
 		}
