@@ -21,7 +21,7 @@ int main() {
 
 	Grid grid{ config.x_min, config.x_max, config.y_min, config.y_max, config.width, config.height };
 
-	//Mandelbrot frac{config.max_iter, config.max_radius};//{ -0.8, 0.156, max_iter, 2.0 };
+	//Mandelbrot frac{ config.max_iter, config.max_radius };
 
 	Julia frac{ config.c_r, config.c_i, config.max_iter, config.max_radius };
 
@@ -95,6 +95,14 @@ int main() {
 
 		// end the current frame
 		window.display();
+		if (config.animate) {
+			config.theta += (pi / 1440);
+			//std::cout << "Phase of c: " << config.theta << std::endl;
+			frac.c_r = config.c_norm * std::cos(config.theta);
+			frac.c_i = config.c_norm * std::sin(config.theta);
+			renderer.render_fractal();
+		}
+
 	}
 
 	return 0;
@@ -112,7 +120,7 @@ int main2() {
 	double y_max = 0.9;// 1.25;
 
 	double c_norm = 0.7885;//0.815;
-	double theta = 2.0;// 2.9830;
+	double theta = 0.0;// 2.9830;
 	double c_r = c_norm * std::cos(theta);
 	double c_i = c_norm * std::sin(theta);
 	int max_iter = 81;
@@ -121,30 +129,6 @@ int main2() {
 	Grid grid{ x_min, x_max, y_min, y_max, width, height };
 
 	Julia julia{ c_r, c_i, max_iter, max_radius};//{ -0.8, 0.156, max_iter, 2.0 };
-	IterativeComplexMap icm{ 2, c_r, c_i, max_iter, max_radius };
-
-	std::vector<int> convergence_vector_j;
-
-	auto start = std::chrono::high_resolution_clock::now();
-	convergence_vector_j = julia.iterate_plane(grid.x_vector, grid.y_vector);
-	auto stop = std::chrono::high_resolution_clock::now();
-	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
-	std::cout << "Computation time for Julia: " << duration.count() / 1000000.0 << " s" << std::endl;
-
-	std::vector<int> convergence_vector_i;
-
-	start = std::chrono::high_resolution_clock::now();
-	convergence_vector_i = icm.iterate_plane(grid.x_vector, grid.y_vector);
-	stop = std::chrono::high_resolution_clock::now();
-	duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
-	std::cout << "Computation time for IterativeComplexMap: " << duration.count() / 1000000.0 << " s" << std::endl;
-
-	for (int i{ 0 }; i < convergence_vector_i.size(); ++i) {
-		if (convergence_vector_i[i] != convergence_vector_j[i]) {
-			std::cout << "Inequality at index: " << i << " with " << convergence_vector_i[i] << " and " << convergence_vector_j[i] << "\n";
-		}
-	}
-	std::cout << "Identical Convergence Vectors for IterativeComplexMap and Julia objects.\n";
 
 	ColorMap color_map{ max_iter, "black_white", false, false, 30};
 
