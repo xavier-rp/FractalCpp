@@ -39,11 +39,6 @@ public:
 
 		compute_colors();
 		
-		int i{ 0 };
-		for (auto c : color_vec) {
-			std::cout << i << ": " << static_cast<int>(c.r) << ", " << static_cast<int>(c.g) << ", " << static_cast<int>(c.b) << ", " << static_cast<int>(c.a) << "\n";
-			++i;
-		}
 	}
 
 	void compute_jet() {

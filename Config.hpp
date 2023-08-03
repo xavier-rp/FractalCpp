@@ -1,7 +1,7 @@
 #pragma once
 #include <cmath>
 
-static struct Config {
+struct Config {
 
 	static constexpr int width = 1240;
 	static constexpr int height = 720;

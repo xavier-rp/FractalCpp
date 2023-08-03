@@ -84,7 +84,7 @@ int main() {
 			}
 		}
 
-		zoomBorder.setPosition(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y);
+		zoomBorder.setPosition(static_cast<float>(sf::Mouse::getPosition(window).x), static_cast<float>(sf::Mouse::getPosition(window).y));
 
 		// clear the window with black color
 		window.clear(sf::Color::Black);
