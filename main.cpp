@@ -6,6 +6,7 @@
 #include "IterativeComplexMap.hpp"
 #include "Julia.hpp"
 #include "Mandelbrot.hpp"
+#include "Burningship.hpp"
 #include "Grid.hpp"
 #include "Renderer.hpp"
 #include "WindowUtils.hpp"
@@ -23,7 +24,9 @@ int main() {
 
 	//Mandelbrot frac{ config.max_iter, config.max_radius };
 
-	Julia frac{ config.c_r, config.c_i, config.max_iter, config.max_radius };
+	Burningship frac{ config.max_iter, config.max_radius };
+
+	//Julia frac{ config.c_r, config.c_i, config.max_iter, config.max_radius };
 
 	ColorMap color_map{ config.max_iter, "black_purple_white", false, true, 30 };
 
